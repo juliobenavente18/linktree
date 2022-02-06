@@ -22,6 +22,11 @@ return new class extends Migration
             $table->string('background_color')->default('#ffffff');
             $table->string('text_color')->default('#000000');
             $table->string('title_color')->default('#000000');
+            $table->string('titulo')->default('Linktree "Mi Empresa"');
+            $table->string('imagen')->nullable();
+            $table->string('fuente')->default('"Tangerine", serif');
+            $table->string('size_titulo')->default('40px');
+            $table->string('size_links')->default('30px');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();

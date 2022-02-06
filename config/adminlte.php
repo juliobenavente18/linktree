@@ -249,6 +249,11 @@ return [
             'icon' => 'fas fa-fw fa-tools',
             'can' => 'admin.users.edit'
         ],
+        [
+            'text' => 'Video de Muestra',
+            'route'  => 'admin.video.index',
+            'icon' => 'fas fa-fw fa-play-circle',
+        ],
         
         // [
         //     'text'    => 'multilevel',

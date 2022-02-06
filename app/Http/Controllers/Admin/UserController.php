@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -14,6 +15,12 @@ class UserController extends Controller
         $backgroundColor = $user->background_color;
         $textColor = $user->text_color;
         $titleColor = $user->title_color;
+        $titulo = $user->titulo;
+        $imagen = $user->imagen;
+        $fuente = $user->fuente;
+        $size_titulo = $user->size_titulo;
+        $size_links = $user->size_links;
+
 
         $user->load('links');
 
@@ -22,6 +29,12 @@ class UserController extends Controller
             'backgroundColor' => $backgroundColor,
             'textColor' => $textColor,
             'titleColor' => $titleColor,
+            'titulo' => $titulo,
+            'imagen' => $imagen,
+            'fuente' => $fuente,
+            'size_titulo' => $size_titulo,
+            'size_links' => $size_links
+
         ]);
     }
 
@@ -37,12 +50,27 @@ class UserController extends Controller
         $request->validate([
             'background_color' => 'required|size:7|starts_with:#',
             'text_color' => 'required|size:7|starts_with:#',
-            'title_color' => 'required|size:7|starts_with:#'
+            'title_color' => 'required|size:7|starts_with:#',
+            'titulo' => 'required',
+            'fuente' => 'required',
+            'size_titulo' => 'required',
+            'size_links' => 'required'
         ]);
 
-        Auth::user()->update($request->only(['background_color', 'text_color', 'title_color']));
-
-        return redirect()->route('admin.links.index')
-            ->with(['success' => 'Changes saved successfully!']);
+        if ($request->hasFile('imagen')) {
+            
+            
+            $imagen = $request->file('imagen')->store('public/imagenes');
+            $url = Storage::url($imagen);
+            Auth::user()->update(['imagen' => $url]);
+            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links']));
+            return redirect()->route('admin.links.index', compact('url'))
+                ->with(['success' => 'Changes saved successfully!']);
+        } else {
+            Auth::user()->update(['imagen' => null]);
+            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links']));
+            return redirect()->route('admin.links.index')
+                ->with(['success' => 'Changes saved successfully!']);
+        }
     }
 }

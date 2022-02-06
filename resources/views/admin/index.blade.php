@@ -8,12 +8,47 @@
 
 @section('content')
 <p>Bienvenido <b><a target="_blank" href="admin/{{Auth::user()->username}}">{{Auth::user()->username}}</a></b> al Panel de Administración de Linktree.</p>
+@if ($video)
+    @can('admin.video.index')
+        <div class="muestra">
+            <iframe class="videomuestra" src="http://www.youtube.com/embed/{{$urlvideo}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    @endcan
+@endif
 @stop
+
+
 
 @section('css')
 <link rel="stylesheet" href="/css/admin_custom.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.11.4/b-2.2.2/b-html5-2.2.2/datatables.min.css" />
+<style>
+    @media screen and (min-width: 768px) and (max-width: 1920px) {
+        .videomuestra {
+            width: 80%;
+            height: 600px;
 
+        }
+
+        .muestra {
+            display: block;
+            text-align: center;
+        }
+    }
+
+    @media screen and (min-width: 365px) and (max-width: 768px) {
+        .videomuestra {
+            width: 100%;
+            height: 190px;
+
+        }
+
+        .muestra {
+            display: block;
+            text-align: center;
+        }
+    }
+</style>
 @stop
 
 @section('js')

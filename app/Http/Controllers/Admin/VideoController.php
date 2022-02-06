@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Video;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-class HomeController extends Controller
+
+class VideoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,17 +15,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
-        $video=Video::all()->first();
-        if (!$video) {
-            return view('admin.index', compact('video'));
-        }else{
-            $stringvideo = $video->url;
-            $vidstring = (string)$stringvideo;
-            $urlvideo=Str::remove('https://www.youtube.com/watch?v=', $vidstring);
-            return view('admin.index', compact('urlvideo', 'video'));
-        }
-        
+        $videos = Video::all();
+        return view('admin.video.index', compact('videos'));
     }
 
     /**
@@ -35,7 +26,8 @@ class HomeController extends Controller
      */
     public function create()
     {
-        //
+        
+        return view('admin.video.create');
     }
 
     /**
@@ -46,7 +38,13 @@ class HomeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'url' => 'required|url',
+        ]);
+        Video::create([
+            'url'=>$request->get('url'),
+        ]);
+        return redirect()->route('admin.video.index');
     }
 
     /**
@@ -68,7 +66,8 @@ class HomeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $video=Video::find($id);
+        return view('admin.video.edit', compact('video'));
     }
 
     /**
@@ -80,7 +79,11 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $video=Video::find($id);
+        $video->url = $request->get('url');
+        $video->update();
+
+        return redirect()->route('admin.video.index');
     }
 
     /**

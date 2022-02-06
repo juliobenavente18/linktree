@@ -31,7 +31,12 @@ class User extends Authenticatable
         'password',
         'background_color',
         'text_color',
-        'title_color'
+        'title_color',
+        'titulo',
+        'imagen',
+        'fuente',
+        'size_titulo',
+        'size_links',
     ];
 
     /**
