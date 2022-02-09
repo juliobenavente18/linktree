@@ -10,7 +10,7 @@
             @csrf
 
             <div>
-                <x-jet-label for="name" value="{{ __('Usuario') }}" />
+                <x-jet-label for="name" value="{{ __('Usuario (El usuario que escribas en este campo servirá para tu enlace de linktree al momento de compartirlo)') }}" />
                 <x-jet-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             </div>
 

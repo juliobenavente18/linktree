@@ -71,6 +71,22 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-group">
+                                <label for="fondo_boton">Color de Fondo del Botón</label>
+                                <x-adminlte-input-color id="fondo_boton" autocomplete="off" class="form-control{{ $errors->first('fondo_boton') ? ' is-invalid' : '' }}" value="{{ $user->fondo_boton }}" name="fondo_boton" placeholder="Seleccione color de Fondo de sus botones de linktree...">
+                                    <x-slot name="prependSlot">
+                                        <div class="input-group-text bg-gradient-light">
+                                            <i class="fas fa-lg fa-tint"></i>
+                                        </div>
+                                    </x-slot>
+                                </x-adminlte-input-color>
+
+                                @if($errors->first('fondo_boton'))
+                                <div class="invalid-feedback">{{ $errors->first('fondo_boton') }}</div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
                                 <label for="titulo">Titulo LinkTree</label>
                                 <input type="text" id="titulo" autocomplete="off" class="form-control{{ $errors->first('titulo') ? ' is-invalid' : '' }}" value="{{ $user->titulo }}" name="titulo" placeholder="Escriba su título...">
                                 @if($errors->first('titulo'))
@@ -78,7 +94,7 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="imagen">Imagen de Fondo</label>
@@ -93,7 +109,7 @@
                                 <label for="fuente">Fuente de Letra</label>
 
                                 <input type="text" id="fuente" autocomplete="off" class="form-control{{ $errors->first('fuente') ? ' is-invalid' : '' }}" value="{{ $user->fuente }}" name="fuente" placeholder="Escoja la fuente de letra...">
-                                
+
 
                                 @if($errors->first('fuente'))
                                 <div class="invalid-feedback">{{ $errors->first('fuente') }}</div>
@@ -105,7 +121,7 @@
                                 <label for="size_titulo">Tamaño de Letra del Título</label>
 
                                 <input type="text" id="size_titulo" autocomplete="off" class="form-control{{ $errors->first('size_titulo') ? ' is-invalid' : '' }}" value="{{ $user->size_titulo }}" name="size_titulo" placeholder="Ejm. 30px">
-                                
+
 
                                 @if($errors->first('size_titulo'))
                                 <div class="invalid-feedback">{{ $errors->first('size_titulo') }}</div>
@@ -117,26 +133,33 @@
                                 <label for="size_links">Tamaño de Letra Links</label>
 
                                 <input type="text" id="size_links" autocomplete="off" class="form-control{{ $errors->first('size_links') ? ' is-invalid' : '' }}" value="{{ $user->size_links }}" name="size_links" placeholder="Ejm. 30px">
-                                
+
 
                                 @if($errors->first('size_links'))
                                 <div class="invalid-feedback">{{ $errors->first('size_links') }}</div>
                                 @endif
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 mb-4">
+                        <h2 class="text-success">También puedes elegir una de nuestras imágenes que tenemos para ti</h2>
+                        @foreach($imagenesmuestra as $imagenmuestra)
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input{{ $errors->first('imagen') ? ' is-invalid' : '' }}" type="radio" name="imagen2" id="{{$imagenmuestra->id}}" value="{{$imagenmuestra->url}}">
+                            <label class="form-check-label" for="{{$imagenmuestra->id}}"><img src="{{$imagenmuestra->url}}" alt="" style="max-height:100px; max-width: 300px;"></label>
+                        </div>
+                        @endforeach
+                        <div class="col-12 col-md-6 mb-4 mt-4">
                             @if($user->imagen)
                             <img id="imagenActual" src="{{$user->imagen}}" style="max-height:300px; max-width: 500px;" alt="">
                             @endif
                             <img id="imagenSeleccionada" style="max-height: 300px;">
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-4">
                         <div class="col-12">
                             @csrf
                             <button type="submit" class="btn btn-primary{{ session('success') ? ' is-valid' : '' }}">Guardar Cambios</button>
                             @if(session('success'))
-                            <div class="valid-feedback">{{ session('success') }}</div>
+                            <div style="font-size: 20px;" class="valid-feedback font-weight-bold">{{ session('success') }}</div>
                             @endif
                         </div>
                     </div>
@@ -148,15 +171,15 @@
 @stop
 @section('js')
 <script>
-    $(document).ready(function (e){
-        $('#imagen').change(function(){
-            
+    $(document).ready(function(e) {
+        $('#imagen').change(function() {
+
             let reader = new FileReader();
             reader.onload = (e) => {
                 $('#imagenSeleccionada').attr('src', e.target.result);
             }
             reader.readAsDataURL(this.files[0]);
-            $('#imagenActual').css("display","none");
+            $('#imagenActual').css("display", "none");
         });
     });
 </script>

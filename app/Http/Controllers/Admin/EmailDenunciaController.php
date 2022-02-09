@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Link;
+use App\Mail\DenunciaMailable;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
-class VisitController extends Controller
+class EmailDenunciaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,8 @@ class VisitController extends Controller
      */
     public function index()
     {
-        //
+        $users=User::all();
+        return view('admin.email.index', compact('users'));
     }
 
     /**
@@ -34,16 +37,11 @@ class VisitController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,Link $link)
+    public function store(Request $request)
     {
-        if ($link->link !== $request->input('link')) {
-            return abort(403);
-        }
-
-        return $link->visits()
-            ->create([
-                'user_agent' => $request->userAgent()
-            ]);
+        $correo = new DenunciaMailable($request->all());
+        Mail::to('juliobenavente18@gmail.com')->send($correo);
+        return redirect()->back();
     }
 
     /**

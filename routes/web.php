@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\VisitController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::post('/visit/{link}', [VisitController::class, 'store']);
 Route::get('/cleareverything', function () {
     
     $clearcache = Artisan::call('cache:clear');
@@ -34,5 +38,6 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/admin', function () {
     return view('admin.index');
 })->name('admin.index');
 
+Route::get('{user}', [UserController::class,'show']);
 
 

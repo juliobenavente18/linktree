@@ -32,11 +32,17 @@ class RoleSeeder extends Seeder
         Permission::create(['name' => 'admin.users_linktree.destroy'])->syncRoles([$role1]);
 
         Permission::create(['name' => 'admin.users.edit'])->syncRoles([$role1, $role2]);;
-        Permission::create(['name' => 'admin.users.show'])->syncRoles([$role1, $role2]);;
 
-        Permission::create(['name' => 'admin.video.index'])->syncRoles([$role1,$role3]);
-        Permission::create(['name' => 'admin.video.edit'])->syncRoles([$role1,$role3]);
-        Permission::create(['name' => 'admin.video.update'])->syncRoles([$role1,$role3]);
-        Permission::create(['name' => 'admin.video.destroy'])->syncRoles([$role1,$role3]);
+        Permission::create(['name' => 'admin.video.index'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.video.create'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.video.edit'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.video.update'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.video.destroy'])->syncRoles([$role1]);
+
+        Permission::create(['name' => 'admin.imagenes.index'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.imagenes.create'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.imagenes.edit'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.imagenes.update'])->syncRoles([$role1]);
+        Permission::create(['name' => 'admin.imagenes.destroy'])->syncRoles([$role1]);
     }
 }

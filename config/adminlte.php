@@ -237,14 +237,14 @@ return [
             'can' => 'admin.users_linktree.index'
         ],
         [
-            'text'        => 'Agregar Links',
+            'text'        => 'Links',
             'route'         => 'admin.links.index',
-            'icon'        => 'fas fa-fw fa-plus',
+            'icon'        => 'fas fa-fw fa-regular fa-globe',
             'can' => 'admin.links.index'
         ],
         
         [
-            'text' => 'Editar Colores',
+            'text' => 'Editar Formato de Linktree',
             'url'  => 'admin/settings',
             'icon' => 'fas fa-fw fa-tools',
             'can' => 'admin.users.edit'
@@ -253,6 +253,13 @@ return [
             'text' => 'Video de Muestra',
             'route'  => 'admin.video.index',
             'icon' => 'fas fa-fw fa-play-circle',
+            'can' => 'admin.video.index'
+        ],
+        [
+            'text' => 'Imagenes de Muestra',
+            'route'  => 'admin.imagenes.index',
+            'icon' => 'fas fa-fw fa-video',
+            'can' => 'admin.imagenes.index'
         ],
         
         // [
@@ -392,11 +399,11 @@ return [
             ],
         ],
         'Sweetalert2' => [
-            'active' => false,
+            'active' => true,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
+                    'asset' => true,
                     'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],

@@ -10,17 +10,27 @@
                 @foreach($user->links as $link)
                     <div class="link">
                         <a
+                            data-link-id="{{ $link->id }}"
                             class="user-link d-block p-4 mb-4 rounded h3 text-center"
                             style="border: 2px solid {{ $textColor }}; color: {{ $textColor }}; font-family: {{$fuente}}; font-size: {{$size_links}};"
                             href="{{ $link->link }}"
                             target="_blank"
                             rel="nofollow"
-                            data-link-id="{{ $link->id }}"
+                            
                         >{{ $link->name }}</a>
                     </div>
                 @endforeach
             </div>
         </div>
     </div>
+
+    <style>
+        a{
+            transition: background-color .5s;
+        }
+        a:hover{
+            background-color: {{$fondo_boton}};
+        }
+    </style>
 @stop
 

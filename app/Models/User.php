@@ -37,6 +37,7 @@ class User extends Authenticatable
         'fuente',
         'size_titulo',
         'size_links',
+        'fondo_boton',
     ];
 
     /**

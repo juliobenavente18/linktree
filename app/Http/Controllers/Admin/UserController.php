@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ImagenesMuestra;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Auth;
@@ -20,6 +21,7 @@ class UserController extends Controller
         $fuente = $user->fuente;
         $size_titulo = $user->size_titulo;
         $size_links = $user->size_links;
+        $fondo_boton = $user->fondo_boton;
 
 
         $user->load('links');
@@ -33,15 +35,17 @@ class UserController extends Controller
             'imagen' => $imagen,
             'fuente' => $fuente,
             'size_titulo' => $size_titulo,
-            'size_links' => $size_links
+            'size_links' => $size_links,
+            'fondo_boton' => $fondo_boton
 
         ]);
     }
 
     public function edit()
     {
-        return view('admin.users.edit', [
-            'user' => Auth::user()
+        $imagenesmuestra = ImagenesMuestra::all();
+        return view('admin.users.edit', compact('imagenesmuestra'), [
+            'user' => Auth::user(),
         ]);
     }
 
@@ -54,23 +58,31 @@ class UserController extends Controller
             'titulo' => 'required',
             'fuente' => 'required',
             'size_titulo' => 'required',
-            'size_links' => 'required'
+            'size_links' => 'required',
+            'fondo_boton' => 'required'
         ]);
 
         if ($request->hasFile('imagen')) {
-            
-            
+
+
             $imagen = $request->file('imagen')->store('public/imagenes');
             $url = Storage::url($imagen);
             Auth::user()->update(['imagen' => $url]);
-            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links']));
-            return redirect()->route('admin.links.index', compact('url'))
-                ->with(['success' => 'Changes saved successfully!']);
+            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links', 'fondo_boton']));
+            return redirect()->back()
+                ->with(['success' => 'Los cambios se han realizado correctamente!']);
+        }
+        if ($request->get('imagen2')) {
+            $imagen = $request->get('imagen2');
+            Auth::user()->update(['imagen' => $imagen]);
+            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links', 'fondo_boton']));
+            return redirect()->back()
+                ->with(['success' => 'Los cambios se han realizado correctamente!']);
         } else {
             Auth::user()->update(['imagen' => null]);
-            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links']));
-            return redirect()->route('admin.links.index')
-                ->with(['success' => 'Changes saved successfully!']);
+            Auth::user()->update($request->only(['background_color', 'text_color', 'title_color', 'titulo', 'fuente', 'size_titulo', 'size_links', 'fondo_boton']));
+            return redirect()->back()
+                ->with(['success' => 'Los cambios se han realizado correctamente!']);
         }
     }
 }

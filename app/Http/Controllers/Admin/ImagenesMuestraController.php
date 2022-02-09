@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Video;
+use App\Models\ImagenesMuestra;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class VideoController extends Controller
+class ImagenesMuestraController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,14 +16,14 @@ class VideoController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('can:admin.video.index')->only('index');
-        $this->middleware('can:admin.video.create')->only('create');
-        $this->middleware('can:admin.video.edit')->only('edit', 'update');
+        $this->middleware('can:admin.imagenes.index')->only('index');
+        $this->middleware('can:admin.imagenes.create')->only('create');
+        $this->middleware('can:admin.imagenes.edit')->only('edit', 'update');
     }
     public function index()
     {
-        $videos = Video::all();
-        return view('admin.video.index', compact('videos'));
+        $imagenesmuestra=ImagenesMuestra::all();
+        return view('admin.imagenes.index', compact('imagenesmuestra'));
     }
 
     /**
@@ -32,8 +33,7 @@ class VideoController extends Controller
      */
     public function create()
     {
-        
-        return view('admin.video.create');
+        return view('admin.imagenes.create');
     }
 
     /**
@@ -45,12 +45,25 @@ class VideoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'url' => 'required|url',
+            'url' => 'required|image|max:2048'
         ]);
-        Video::create([
-            'url'=>$request->get('url'),
+        // $imagenesmuestra = $request->all();
+        // if ($imagen  = $request->file('url')) {
+        //     $rutaGuardarImg = 'imagen/';
+        //     $imagenfondo = date('YmdHis'). "." . $imagen->getClientOriginalExtension();
+        //     $imagen->move($rutaGuardarImg, $imagenfondo);
+        //     $imagenesmuestra['url'] = "$imagenfondo";
+        // }
+
+        // ImagenesMuestra::create($imagenesmuestra);
+
+        $imagenesmuestra = $request->file('url')->store('public/imagenes');
+        $url = Storage::url($imagenesmuestra);
+        ImagenesMuestra::create([
+            'url'=>$url,
         ]);
-        return redirect()->route('admin.video.index');
+        
+        return redirect()->route('admin.imagenes.index');
     }
 
     /**
@@ -72,8 +85,7 @@ class VideoController extends Controller
      */
     public function edit($id)
     {
-        $video=Video::find($id);
-        return view('admin.video.edit', compact('video'));
+        //
     }
 
     /**
@@ -85,11 +97,7 @@ class VideoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $video=Video::find($id);
-        $video->url = $request->get('url');
-        $video->update();
-
-        return redirect()->route('admin.video.index');
+        //
     }
 
     /**
@@ -100,6 +108,8 @@ class VideoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $imagenesmuestra = ImagenesMuestra::find($id);
+        $imagenesmuestra->delete();
+        return redirect()->route('admin.imagenes.index');
     }
 }

@@ -7,7 +7,10 @@
 @stop
 
 @section('content')
-<p>Bienvenido <b><a target="_blank" href="admin/{{Auth::user()->username}}">{{Auth::user()->username}}</a></b> al Panel de Administración de Linktree.</p>
+<p>Bienvenido 
+@can('admin.users.edit')    
+<b><a target="_blank" href="/{{Auth::user()->username}}">{{Auth::user()->username}}</a>
+</b>@endcan al Panel de Administración de Linktree.</p>
 @if ($video)
     @can('admin.video.index')
         <div class="muestra">
@@ -15,6 +18,12 @@
         </div>
     @endcan
 @endif
+@can('admin.links.create')
+<a href="{{route('admin.links.create')}}" class="btn btn-primary font-weight-bold mt-2">Agregar Links</a>
+@endcan
+@can('admin.users.edit')
+<a target="_blank" href="/{{Auth::user()->username}}" class="btn btn-warning font-weight-bold mt-2">Ver Linktree</a>
+@endcan
 @stop
 
 
